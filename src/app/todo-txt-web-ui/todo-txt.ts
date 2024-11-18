@@ -267,15 +267,20 @@ export module TodoTxt {
         var bActive = taskB.isActive;
         var aPri = taskA.priority;
         var bPri = taskB.priority;
-        //var aCreated = taskA.createdDate;
-        //var bCreated = taskB.createdDate;
         var aDue = taskA.dueDate;
         var bDue = taskB.dueDate;
         var aCompleted = taskA.completedDate;
         var bCompleted = taskB.completedDate;
+        var aHidden = taskA.h;
+        var bHidden = taskB.h;
 
-        // (1) compare active vs. closed
-        if (aActive !== bActive) {
+        if (aHidden !== bHidden) {
+            if (aHidden) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else if (aActive !== bActive) { // (1) compare active vs. closed
             // prioritize active over closed
             if (aActive) {
                 return -1;
