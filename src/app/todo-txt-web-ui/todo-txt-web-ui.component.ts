@@ -223,14 +223,14 @@ export class TodoTxtWebUiComponent {
       // markup projects
       let projects: string[] = task.projects;
       projects.forEach((project) => {
-          var regex = new RegExp(project.replace(/\+/g, "\\+") + "(?![0-9A-Za-z])", "g");
+          var regex = new RegExp(project.replace(/\+/g, "\\+") + "(?![\S])", "g");
           text = text.replace(regex, "<span class=\"text-muted\"><b><i>" + project + "</i></b></span>");
       });
 
       // markup contexts
       let contexts: string[] = task.contexts;
       contexts.forEach((ctx) => {
-          var regex = new RegExp(ctx + "(?![0-9A-Za-z])", "g");
+          var regex = new RegExp(ctx + "(?![\S])", "g");
           text = text.replace(regex, "<span class=\"text-muted\"><b><i>" + ctx + "</i></b></span>");
       });
 

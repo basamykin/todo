@@ -180,7 +180,7 @@ export module TodoTxtTaskParser {
         if (str) {
             // parse out the projects RegEx: /\+[0-9A-Za-z]+\s/ (words starting with "+")
             // check for strings like "+ABC123"
-            var projPattern = /((\s|^)[\(\{\["']?\+[0-9A-Za-z]+[\)\}\]"']?(?=\s|$))/g;
+            var projPattern = /((\s|^)[\(\{\["']?\+[\S]+[\)\}\]"']?(?=\s|$))/g;
             var match = str.match(projPattern); // returns null if not found
             if (match) {
                 // only store one instance of duplicate project entries
@@ -198,7 +198,7 @@ export module TodoTxtTaskParser {
         if (str) {
             // parse out the contexts RegEx: /\@[0-9A-Za-z]+\s/ (words starting with "@")
             // check for strings like "@ABC123"
-            var ctxPattern = /((\s|^)[\(\{\["']?\@[0-9A-Za-z]+[\)\}\]"']?(?=\s|$))/g;
+            var ctxPattern = /((\s|^)[\(\{\["']?\@[\S]+[\)\}\]"']?(?=\s|$))/g;
             var match = str.match(ctxPattern); // returns null if not found
             if (match) {
                 // only store one instance of duplicate project entries

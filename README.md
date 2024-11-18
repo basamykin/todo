@@ -23,7 +23,6 @@ Making this, I was impressed by Sleek, because it allows mix together GTD and th
 
 ## Roadmap
 - make links active
-- make project/context regexes allow any non-white-char symbol
 - autosave file
 
 ## Notes
