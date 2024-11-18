@@ -204,6 +204,19 @@ export class TodoTxtWebUiComponent {
           text = text.replace(date, "<span class=\"text-muted hidden-xs\"><b><i>" + date + "</i></b></span>");
       }
 
+      let dueDate: string = task.dueDate;
+      if (dueDate) {
+          let todayDate = new Date()
+          let today = todayDate.toISOString().split('T')[0];
+          if (today > dueDate) {
+            text = text.replace(dueDate, "<span style=\"color: red;\"><b><i>" + dueDate + "</i></b></span>");
+          } else if (today < dueDate) {
+            text = text.replace(dueDate, "<span style=\"color: blue;\"><b><i>" + dueDate + "</i></b></span>");
+          } else {
+            text = text.replace(dueDate, "<span style=\"color: green;\"><b><i>" + dueDate + "</i></b></span>");
+          }
+      }
+
       return this.sanitiser.bypassSecurityTrustHtml(text);
   }
   

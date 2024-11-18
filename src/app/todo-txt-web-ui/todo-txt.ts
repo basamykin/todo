@@ -223,15 +223,15 @@ export module TodoTxt {
 
     /** @ignore */
     function compareTasks(taskA: TodoTxtTask, taskB: TodoTxtTask) {
-        // function will allow sorting of tasks by the following
-        // criteria: (1) active vs. closed (2) priority (3) created date
-        // (4) completed date
+        // function will allow sorting of tasks
         var aActive = taskA.isActive;
         var bActive = taskB.isActive;
         var aPri = taskA.priority;
         var bPri = taskB.priority;
-        var aCreated = taskA.createdDate;
-        var bCreated = taskB.createdDate;
+        //var aCreated = taskA.createdDate;
+        //var bCreated = taskB.createdDate;
+        var aDue = taskA.dueDate;
+        var bDue = taskB.dueDate;
         var aCompleted = taskA.completedDate;
         var bCompleted = taskB.completedDate;
 
@@ -252,9 +252,15 @@ export module TodoTxt {
                     return 1;
                 }
             } else { // (3) compare created date
-                if (aCreated !== bCreated) {
+                if (aDue !== bDue) {
                     // order by created date ascending (oldest ones first)
-                    if (aCreated < bCreated) {
+                    if (aDue && !bDue) {
+                        return -1;
+                    }
+                    if (bDue && !aDue) {
+                        return 1;
+                    }
+                    if (aDue < bDue) {
                         return -1;
                     } else {
                         return 1;

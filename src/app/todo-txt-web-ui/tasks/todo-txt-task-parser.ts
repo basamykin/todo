@@ -10,6 +10,7 @@ export module TodoTxtTaskParser {
             priority: getPriority(text),
             completedDate: getCompletedDate(text),
             createdDate: getCreatedDate(text),
+            dueDate: getDueDate(text),
             projects: getProjects(text),
             contexts: getContexts(text)
         };
@@ -80,6 +81,53 @@ export module TodoTxtTaskParser {
         }
         
         return created;
+    }
+
+    const rTags = /([^\s:]+:[^\s:]+|[+@]\S+)/g;
+
+    function parseBody(body: string) {
+        let start = 0;
+        const tags = (body.match(rTags) || []).map((tag): [string, number] => {
+            const tagStart = body.indexOf(tag, start);
+            if (tagStart != -1) {
+                start = tagStart + tag.length;
+            }
+            return [tag, tagStart];
+        });
+    
+        //const contexts: TrackedContext[] = [];
+        //const projects: TrackedProject[] = [];
+        //const extensions: TrackedExtension[] = [];
+
+        const extensions = [];
+    
+        tags.forEach(([tag, start]) => {
+            if (tag[0] == '@') {
+                //contexts.push({ tag: tag.slice(1), start });
+            } else if (tag[0] == '+') {
+                //projects.push({ tag: tag.slice(1), start });
+            } else {
+                const split = tag.split(':', 2);
+                extensions.push({ key: split[0], value: split[1], start });
+            }
+        });
+    
+        //return { contexts, projects, extensions };
+        return extensions;
+    }
+
+    function getDueDate(str: string): string {
+        var extensions = parseBody(str) || [];
+
+        var dueDate = "";
+
+        extensions.forEach(item => {
+            if (item.key == "due") {
+                dueDate = item.value;
+            }
+        });
+        
+        return dueDate;
     }
 
     function getDatesFromText(str: string): string[] {
