@@ -51,6 +51,7 @@ export class TodoTxtWebUiComponent {
     if (data) {
       this.fileName = data.name;
       let lines: string[] = data.text?.split('\n') || [];
+      TodoTxtVault.removeAllTasks();
       TodoTxtVault.addTasks(...TodoTxtTaskParser.getMany(...lines));
     }
   }
