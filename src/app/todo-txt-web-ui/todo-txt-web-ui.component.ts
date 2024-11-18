@@ -238,14 +238,17 @@ export class TodoTxtWebUiComponent {
   }
 
   getPriorities(): string[] {
-    return Array.from(TodoTxtAttributes.priorities);
+    let pri = Array.from(TodoTxtAttributes.priorities)
+    return pri.sort();
   }
 
   getProjects(): string[] {
-    return Array.from(TodoTxtAttributes.projects);
+    let proj = Array.from(TodoTxtAttributes.projects)
+    return proj.sort();
   }
 
   getContexts(): string[] {
-    return Array.from(TodoTxtAttributes.contexts);
+    let ctx = Array.from(TodoTxtAttributes.contexts)
+    return ctx.sort();
   }
 }
