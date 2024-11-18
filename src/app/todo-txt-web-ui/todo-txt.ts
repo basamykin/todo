@@ -168,12 +168,51 @@ export module TodoTxt {
 
         if (task && task.isActive) {
             var text = task.text;
-            if (task.priority) {
-                text = text.replace(task.priority, "");
+            if (task.rec) {
+                let step = task.rec;
+                step = step.replace("+", "");
+
+                let unit = step.slice(-1);
+                step = step.slice(0, -1);
+
+                let n = Number(step);
+
+                function addDays(date, days) {
+                    var result = new Date(date);
+                    result.setDate(result.getDate() + days);
+                    return result;
+                }
+
+                let nextDate = new Date();
+
+                if (unit == "d" || unit == "b") {
+                    nextDate = addDays(nextDate, n)
+                } else if (unit == "w") {
+                    nextDate = addDays(nextDate, n*7)
+                } else if (unit == "m") {
+                    nextDate = new Date(nextDate.setMonth(nextDate.getMonth() + n));
+                } else if (unit == "y") {
+                    nextDate = new Date(nextDate.setFullYear(nextDate.getFullYear() + n));
+                }
+
+                let nextDateString = TodoTxtUtils.formatDate(nextDate);
+
+                if (task.dueDate){
+                    text = text.replace(task.dueDate, nextDateString);
+                } else {
+                    text += " due:" + nextDateString;
+                }
+
+                updateTask(task.id, text);
+                return false;
+            } else {
+                if (task.priority) {
+                    text = text.replace(task.priority, "");
+                }
+                text = "x " + TodoTxtUtils.formatDate(new Date()) + " " + text;
+                updateTask(task.id, text);
+                return true;
             }
-            text = "x " + TodoTxtUtils.formatDate(new Date()) + " " + text;
-            updateTask(task.id, text);
-            return true;
         }
         
         return false;

@@ -37,6 +37,7 @@ export interface TodoTxtTask {
     createdDate?: string;
     completedDate?: string;
     dueDate?: string;
+    rec?: string;
     projects?: string[];
     contexts?: string[];
     metadatas?: string[];

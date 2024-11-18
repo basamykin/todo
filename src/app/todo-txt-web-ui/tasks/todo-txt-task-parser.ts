@@ -11,6 +11,7 @@ export module TodoTxtTaskParser {
             completedDate: getCompletedDate(text),
             createdDate: getCreatedDate(text),
             dueDate: getDueDate(text),
+            rec: getRec(text),
             projects: getProjects(text),
             contexts: getContexts(text)
         };
@@ -128,6 +129,20 @@ export module TodoTxtTaskParser {
         });
         
         return dueDate;
+    }
+
+    function getRec(str: string): string {
+        var extensions = parseBody(str) || [];
+
+        var rec = "";
+
+        extensions.forEach(item => {
+            if (item.key == "rec") {
+                rec = item.value;
+            }
+        });
+        
+        return rec;
     }
 
     function getDatesFromText(str: string): string[] {
