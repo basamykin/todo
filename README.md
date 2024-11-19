@@ -19,6 +19,7 @@ Making this, I was impressed by Sleek, because it allows mix together GTD and th
 - Supports h:1 tag (items with this tag are sorted down, like "hidden")
 - Supports due: and rec: tags for deferred tasks
 - Auto sorting moves urgent tasks to the top
+- Hide closed/hidden/future tasks
 
 ## Roadmap
 - make links active

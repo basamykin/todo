@@ -36,7 +36,7 @@ import { TodoTextCache } from "./todo-txt-cache";
 
 export module TodoTxtVault {
     var _tasks: Map<string, TodoTxtTask> = new Map<string, TodoTxtTask>();
-    var config: TodoTxtConfig = { showClosed: false };
+    var config: TodoTxtConfig = { showClosed: false, showHidden: true, showFuture: true };
     var cacheError: number = 0;
 
     export function addTasks(...tasks: TodoTxtTask[]): void {
@@ -139,7 +139,7 @@ export module TodoTxtVault {
      */
     export function _clear(): void {
         _tasks = new Map<string, TodoTxtTask>();
-        config = {showClosed: false};
+        config = {showClosed: false, showHidden: true, showFuture: true};
         localStorage.removeItem('todo-txt');
     }
 }

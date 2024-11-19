@@ -32,4 +32,6 @@
  **********************************************************************/
 export interface TodoTxtConfig {
     showClosed: boolean;
+    showHidden: boolean;
+    showFuture: boolean;
 }

@@ -21,6 +21,8 @@ export class TodoTxtWebUiComponent {
   downloadFileName: string;
   isDirty: boolean;
   showClosed: boolean;
+  showHidden: boolean;
+  showFuture: boolean;
   downloadUrl: SafeUrl;
   filterStr: string;
   editingTaskId: string;
@@ -29,6 +31,8 @@ export class TodoTxtWebUiComponent {
   constructor(private sanitiser: DomSanitizer, private changeDetector: ChangeDetectorRef) {
     this.isDirty = false;
     this.showClosed = TodoTxtVault.getConfig().showClosed;
+    this.showHidden = TodoTxtVault.getConfig().showHidden;
+    this.showFuture = TodoTxtVault.getConfig().showFuture;
     this.downloadFileName = 'todo.txt';
   }
 
@@ -36,6 +40,20 @@ export class TodoTxtWebUiComponent {
     let cfg: TodoTxtConfig = TodoTxtVault.getConfig();
     cfg.showClosed = !cfg.showClosed;
     this.showClosed = cfg.showClosed;
+    TodoTxtVault.setConfig(cfg);
+  }
+
+  async toggleShowHidden(): Promise<void> {
+    let cfg: TodoTxtConfig = TodoTxtVault.getConfig();
+    cfg.showHidden = !cfg.showHidden;
+    this.showHidden = cfg.showHidden;
+    TodoTxtVault.setConfig(cfg);
+  }
+
+  async toggleShowFuture(): Promise<void> {
+    let cfg: TodoTxtConfig = TodoTxtVault.getConfig();
+    cfg.showFuture = !cfg.showFuture;
+    this.showFuture = cfg.showFuture;
     TodoTxtVault.setConfig(cfg);
   }
 
@@ -159,15 +177,32 @@ export class TodoTxtWebUiComponent {
 
   getTasks(): TodoTxtTask[] {
     let tasks: TodoTxtTask[] = TodoTxt.getFilteredTaskArray(this.filterStr);
-    if (!TodoTxtVault.getConfig().showClosed) {
-      let active: TodoTxtTask[] = [];
-      for (var i=0; i<tasks.length; i++) {
-        if (tasks[i].isActive) {
-          active.push(tasks[i]);
+    let showClosed = TodoTxtVault.getConfig().showClosed;
+    let showHidden = TodoTxtVault.getConfig().showHidden;
+    let showFuture = TodoTxtVault.getConfig().showFuture;
+
+    
+    let visible: TodoTxtTask[] = [];
+    for (var i=0; i<tasks.length; i++) {
+      if (!showClosed && !tasks[i].isActive) {
+        continue;
+      }
+
+      if (!showHidden && tasks[i].h) {
+        continue;
+      }
+
+      if (!showFuture && tasks[i].dueDate) {
+        let todayDate = new Date();
+        let today = todayDate.toISOString().split('T')[0];
+        if (tasks[i].dueDate > today) {
+          continue;
         }
       }
-      tasks = active;
+
+      visible.push(tasks[i]);
     }
+    tasks = visible;
     return tasks;
   }
 
