@@ -110,6 +110,8 @@ export module TodoTxtUtils {
             .replace(/&nbsp;/g, ' ');
     }
 
+    let writable = null;
+
     export async function readFile(): Promise<FileData> {
         let [handle] = await window.showOpenFilePicker();
         const file = await handle.getFile();
@@ -118,20 +120,28 @@ export module TodoTxtUtils {
     }
 
     export async function saveToFile(data: FileData): Promise<void> {
-        const options = {
-            suggestedName: data.name || 'todo.txt',
-            types: [
-              {
-                description: "ToDo.txt file",
-                accept: {
-                  "text/plain": [".txt"],
-                },
-              },
-            ],
-          };
-        const handle = await window.showSaveFilePicker(options);
-        const file = await handle.createWritable();
-        await file.write(data.text || '');
-        await file.close();
+        try {
+            let handle = writable;
+            const file = await handle.createWritable();
+            await file.write(data.text || '');
+            await file.close();
+        } catch (error) {
+            const options = {
+                suggestedName: data.name || 'todo.txt',
+                types: [
+                  {
+                    description: "ToDo.txt file",
+                    accept: {
+                      "text/plain": [".txt"],
+                    },
+                  },
+                ],
+              };
+            const handle = await window.showSaveFilePicker(options);
+            writable = handle;
+            const file = await handle.createWritable();
+            await file.write(data.text || '');
+            await file.close();
+        }
     }
 }

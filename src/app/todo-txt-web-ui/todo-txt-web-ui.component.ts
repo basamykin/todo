@@ -99,7 +99,8 @@ export class TodoTxtWebUiComponent {
   }
 
   async click_SaveTasks(): Promise<void> {
-    let text: string = this.getTasks().map((t) => t.text?.trim())?.join('\n');
+    // let text: string = this.getTasks().map((t) => t.text?.trim())?.join('\n');
+    let text: string = TodoTxtVault.getAllTasks().map((t) => t.text?.trim())?.join('\n');
     if (text) {
       await TodoTxtUtils.saveToFile({text: text, name: this.fileName})
       .catch((err) => {
@@ -124,10 +125,12 @@ export class TodoTxtWebUiComponent {
 
   async click_MarkComplete(id: string): Promise<void> {
     TodoTxt.closeTask(id);
+    this.click_SaveTasks();
   }
 
   async click_MarkActive(id: string): Promise<void> {
     TodoTxt.activateTask(id);
+    this.click_SaveTasks();
   }
   
   async click_StartEditTask(id: string): Promise<string> {
@@ -173,6 +176,7 @@ export class TodoTxtWebUiComponent {
     this.editingTaskId = null;
     this.isAddingNew = false;
     this.changeDetector.detectChanges();
+    this.click_SaveTasks();
   }
 
   getTasks(): TodoTxtTask[] {
