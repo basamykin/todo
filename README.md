@@ -17,13 +17,13 @@ Making this, I was impressed by Sleek, because it allows mix together GTD and th
 - Allows deleting of existing tasks
 - Allows filtering of the displayed list of tasks by Priority, Project and Context
 - Supports h:1 tag (items with this tag are sorted down, like "hidden")
-- Supports due: and rec: tags for deferred tasks
+- Supports due:YYYY-MM-DD and rec: (examples - rec:1d, rec:2w, rec:1m, rec:3y) tags for deferred tasks
 - Auto sorting moves urgent tasks to the top
 - Hide closed/hidden/future tasks
+- Autosave to disk after changes (asks to choose file)
 
 ## Roadmap
 - make links active
-- autosave file
 
 ## Notes
 - if you are tracking more than 1000 Tasks, the performance will start to degrade (~5 seconds per add / edit / delete operation)
