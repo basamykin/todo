@@ -27,6 +27,7 @@ export class TodoTxtWebUiComponent {
   filterStr: string;
   editingTaskId: string;
   isAddingNew: boolean;
+  lastModified: number;
 
   constructor(private sanitiser: DomSanitizer, private changeDetector: ChangeDetectorRef) {
     this.isDirty = false;
@@ -67,8 +68,30 @@ export class TodoTxtWebUiComponent {
       }
     });
     if (data) {
+      if (this.lastModified && data.lastModified <= this.lastModified) {
+        return; // no need to reload, if file wasn't changed externally
+      }
+
+      if (!this.lastModified) {
+        setInterval(async () => {
+          // fetch file
+          const data: FileData = await TodoTxtUtils.readFile()
+            .catch((err) => { console.log(2); return null; });
+          if (data) {
+            // check timestamp
+            if (this.lastModified && data.lastModified <= this.lastModified) {
+              return; // no need to reload, if file wasn't changed externally
+            } else {
+              this.click_OpenToDoFile();
+            }
+          }
+        }, 10000);
+      }
+
       this.fileName = data.name;
+      this.lastModified = data.lastModified;
       let lines: string[] = data.text?.split('\n') || [];
+
       TodoTxtVault.removeAllTasks();
       TodoTxtVault.addTasks(...TodoTxtTaskParser.getMany(...lines));
     }
@@ -111,6 +134,7 @@ export class TodoTxtWebUiComponent {
         }
       });
     }
+    this.lastModified = Date.now();
     this.isDirty = false;
   }
 

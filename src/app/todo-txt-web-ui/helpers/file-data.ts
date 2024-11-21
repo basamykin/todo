@@ -3,4 +3,5 @@ export interface FileData {
     name?: string;
     path?: string;
     size?: number;
+    lastModified?: number;
 }

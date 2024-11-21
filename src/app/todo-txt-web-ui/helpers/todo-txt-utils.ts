@@ -110,13 +110,22 @@ export module TodoTxtUtils {
             .replace(/&nbsp;/g, ' ');
     }
 
+    let readable = null;
     let writable = null;
 
     export async function readFile(): Promise<FileData> {
-        let [handle] = await window.showOpenFilePicker();
-        const file = await handle.getFile();
-        const text = await file.text();
-        return {text: text, name: file.name, path: file.webkitRelativePath, size: file.size};
+        try {
+            let handle = readable;
+            const file = await handle.getFile();
+            const text = await file.text();
+            return {text: text, name: file.name, path: file.webkitRelativePath, size: file.size, lastModified: file.lastModified};
+        } catch (error) {
+            let [handle] = await window.showOpenFilePicker();
+            readable = handle;
+            const file = await handle.getFile();
+            const text = await file.text();
+            return {text: text, name: file.name, path: file.webkitRelativePath, size: file.size, lastModified: file.lastModified};
+        }
     }
 
     export async function saveToFile(data: FileData): Promise<void> {

@@ -20,7 +20,7 @@ Making this, I was impressed by Sleek, because it allows mix together GTD and th
 - Supports due:YYYY-MM-DD and rec: (examples - rec:1d, rec:2w, rec:1m, rec:3y) tags for deferred tasks
 - Auto sorting moves urgent tasks to the top
 - Hide closed/hidden/future tasks
-- Autosave to disk after changes (asks to choose file)
+- Autosave and autoreload of changes (asks to choose file, then uses it without exta requests)
 
 ## Roadmap
 - make links active
